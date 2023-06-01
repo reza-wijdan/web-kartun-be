@@ -1,40 +1,46 @@
-import multer from "multer";
 import Movie from "../models/movie.js";
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const extension = file.originalname.split(".").pop();
-    const filename = uniqueSuffix + "." + extension;
-    cb(null, filename);
-  },
-});
 
-const upload = multer({ storage: storage }).single("image");
-
-export const createMovie = (req, res) => {
-  upload(req, res, async (err) => {
-    if (err) {
-      console.error("Error uploading image:", err);
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
-
-    try {
-      const { title, year, genre } = req.body;
-      const imagePath = req.file ? req.file.path : "";
-
-      const movie = await Movie.create({ title, year, genre, imagePath });
-
-      res.json({ movie });
-    } catch (error) {
-      console.error("Error creating movie:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  });
+export const createMovie = async (req, res) => {
+  try {
+    const movie = await Movie.create({
+      title: req.body.title,
+      genre: req.body.genre,
+      year: req.body.year,
+      imagePath: `${req.protocol}://${req.get('host')}/${req.file.path}`
+    })
+    res.status(201).json({
+      message: "Berhasil tambah movie",
+      data: movie
+    })
+  } catch(error) {
+    res.status(404).json({
+      message: error.message
+    })
+  }
 };
+
+export const updateMovie = async (req, res) => {
+  try {
+    const movie = await Movie.update({
+      title: req.body.title,
+      genre: req.body.genre,
+      year: req.body.year,
+      imagePath: `${req.protocol}://${req.get('host')}/${req.file.path}`
+    },{
+      where: {
+        id: req.params.id
+      }
+    })
+    res.status(201).json({
+      message: "Berhasil edit movie",
+    })
+  } catch(error) {
+    res.status(404).json({
+      message: error.message
+    })
+  }
+}
 
 export const getMovie = async (req, res) => {
   try {
@@ -44,3 +50,16 @@ export const getMovie = async (req, res) => {
     console.log(error.message);
   }
 };
+
+export const deleteMovie = async(req, res) =>{
+  try {
+      await Movie.destroy({
+          where:{
+              id: req.params.id
+          }
+      });
+      res.status(200).json({msg: "Movie Deleted"});
+  } catch (error) {
+      console.log(error.message);
+  }
+}

@@ -8,6 +8,9 @@ const Movie = db.define('Movie', {
     genre: DataTypes.STRING,
     year: DataTypes.STRING,
     imagePath: DataTypes.STRING,
+    
+  },{
+    timestamps: false
   });
 
   export default Movie;

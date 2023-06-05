@@ -5,6 +5,7 @@ export const createMovie = async (req, res) => {
   try {
     const movie = await Movie.create({
       title: req.body.title,
+      desc: req.body.desc,
       genre: req.body.genre,
       year: req.body.year,
       imagePath: `${req.protocol}://${req.get('host')}/${req.file.path}`
@@ -22,8 +23,9 @@ export const createMovie = async (req, res) => {
 
 export const updateMovie = async (req, res) => {
   try {
-    const movie = await Movie.update({
+    await Movie.update({
       title: req.body.title,
+      desc: req.body.desc,
       genre: req.body.genre,
       year: req.body.year,
       imagePath: `${req.protocol}://${req.get('host')}/${req.file.path}`

@@ -54,12 +54,10 @@ export const getMovie = async (req, res) => {
 };
 
 export const getMovieById = async(req, res) => {
+  const id = req.body.id;
   try {
-    const response = await Movie.findOne({
-      where: {
-        id: req.params.id
-      }
-    });
+    const response = await Movie.findOne(id);
+    res.status(200).json(response);
   } catch (error) {
     console.log(error.message);
   }

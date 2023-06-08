@@ -17,7 +17,7 @@ const upload = multer({ storage: storage });
 const router = express.Router();
 
 router.get('/getMovie', getMovie );
-router.get('/getMovie/:id', getMovieById );
+router.post('/detailMovie', getMovieById );
 router.post('/movie', upload.single('imagePath'), createMovie); 
 router.put('/movie/:id', upload.single('imagePath'), updateMovie);
 router.delete('/movie/:id', deleteMovie);

@@ -53,6 +53,18 @@ export const getMovie = async (req, res) => {
   }
 };
 
+export const getMovieById = async(req, res) => {
+  try {
+    const response = await Movie.findOne({
+      where: {
+        id: req.params.id
+      }
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
 export const deleteMovie = async(req, res) =>{
   try {
       await Movie.destroy({

@@ -1,5 +1,5 @@
 import express from 'express';
-import {getMovie, createMovie, deleteMovie, updateMovie, getMovieById } from '../controllers/movieControllers.js';
+import {getMovie, createMovie, deleteMovie, updateMovie, getMovieById, searchMovie } from '../controllers/movieControllers.js';
 import multer from 'multer';
 
 
@@ -21,5 +21,6 @@ router.post('/detailMovie', getMovieById );
 router.post('/movie', upload.single('imagePath'), createMovie); 
 router.put('/movie/:id', upload.single('imagePath'), updateMovie);
 router.delete('/movie/:id', deleteMovie);
+router.get('/movie/search', searchMovie);
 
 export default router;

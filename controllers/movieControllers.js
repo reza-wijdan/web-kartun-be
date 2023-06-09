@@ -1,4 +1,5 @@
 import Movie from "../models/movie.js";
+import { Op } from "sequelize";
 
 
 export const createMovie = async (req, res) => {
@@ -74,4 +75,40 @@ export const deleteMovie = async(req, res) =>{
   } catch (error) {
       console.log(error.message);
   }
+}
+
+export const searchMovie = async(req, res) => {
+  const searchTerm = req.query.q;
+
+  try {
+    const response = await Movie.findAll({
+      where: {
+        [Op.or]: [{
+          title : {
+            [Op.like] : `%${searchTerm}%`
+          }
+        }]
+      }
+    });
+    res.status(200).json(response);
+  } catch(error) {
+    console.log(error.message);
+  }
+
+
+  // try {
+  //   const movie = await Movie.findAll({
+  //     where: {
+  //       [Op.or]: [{
+  //         title : {
+  //           [Op.like] : `%${search}%`
+  //         }
+  //       }]
+  //     }
+  //   });
+  //   res.status(200).json(movie);
+  // } catch (error) {
+  //   console.log(error.message);
+  // }
+
 }

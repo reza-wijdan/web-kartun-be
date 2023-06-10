@@ -20,7 +20,7 @@ router.get('/getMovie', getMovie );
 router.post('/detailMovie', getMovieById );
 router.post('/movie', upload.single('imagePath'), createMovie); 
 router.put('/movie/:id', upload.single('imagePath'), updateMovie);
-router.delete('/movie/:id', deleteMovie);
+router.delete('/movie/hapus/:id', deleteMovie);
 router.get('/movie/search', searchMovie);
 
 export default router;

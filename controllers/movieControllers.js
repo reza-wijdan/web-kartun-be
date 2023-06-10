@@ -56,8 +56,13 @@ export const getMovie = async (req, res) => {
 
 export const getMovieById = async(req, res) => {
   const id = req.body.id;
+  console.log(id)
   try {
-    const response = await Movie.findOne(id);
+    const response = await Movie.findAll({
+      where: {
+        id: id
+      }
+    });
     res.status(200).json(response);
   } catch (error) {
     console.log(error.message);

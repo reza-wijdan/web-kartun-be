@@ -23,26 +23,37 @@ export const createMovie = async (req, res) => {
 };
 
 export const updateMovie = async (req, res) => {
+  const Id = req.params.id;
+  const updateAttr = req.body;
+
   try {
-    await Movie.update({
-      title: req.body.title,
-      desc: req.body.desc,
-      genre: req.body.genre,
-      year: req.body.year,
-      imagePath: `${req.protocol}://${req.get('host')}/${req.file.path}`
-    },{
-      where: {
-        id: req.params.id
-      }
-    })
-    res.status(201).json({
-      message: "Berhasil edit movie",
-    })
-  } catch(error) {
-    res.status(404).json({
-      message: error.message
-    })
+    const movie = await Movie.update(updateAttr, {where: { id: Id}});
+
+    return res.status(200).json({ message: 'Movie berhasil diubah' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Terjadi kesalahan dalam memperbarui movie' });
   }
+  // try {
+  //   await Movie.update({
+  //     title: req.body.title,
+  //     desc: req.body.desc,
+  //     genre: req.body.genre,
+  //     year: req.body.year,
+  //     imagePath: `${req.protocol}://${req.get('host')}/${req.file.path}`
+  //   },{
+  //     where: {
+  //       id: req.params.id
+  //     }
+  //   })
+  //   res.status(201).json({
+  //     message: "Berhasil edit movie",
+  //   })
+  // } catch(error) {
+  //   res.status(404).json({
+  //     message: error.message
+  //   })
+  // }
 }
 
 export const getMovie = async (req, res) => {
@@ -55,6 +66,7 @@ export const getMovie = async (req, res) => {
 };
 
 export const getMovieById = async(req, res) => {
+  res.set('Content-Type', 'application/json');
   const id = req.body.id;
   console.log(id)
   try {

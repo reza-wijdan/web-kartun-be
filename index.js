@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import MovieRoutes from "./routes/MovieRoute.js";
+import bodyParser from "body-parser";
 
 const app = express();
 app.use(cors());
